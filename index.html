@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cevin Gurung | Portfolio</title>
+
   <style>
     :root {
       --bg: #0d0d0d;
@@ -22,12 +23,45 @@
       --shadow: rgba(0,0,0,0.1);
     }
 
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
       font-family: "Poppins", sans-serif;
       background-color: var(--bg);
       color: var(--text);
       transition: background 0.5s, color 0.5s;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      inset: -220px;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.7;
+      transition: opacity 0.5s;
+    }
+    body::before {
+      background:
+        radial-gradient(720px 360px at 15% 10%, rgba(76,201,240,0.14), transparent 60%),
+        radial-gradient(680px 340px at 85% 14%, rgba(76,201,240,0.09), transparent 55%);
+    }
+    body.light::before {
+      background:
+        radial-gradient(720px 360px at 15% 10%, rgba(0,119,255,0.12), transparent 60%),
+        radial-gradient(680px 340px at 85% 14%, rgba(0,119,255,0.08), transparent 55%);
+    }
+    body::after {
+      background:
+        radial-gradient(780px 420px at 50% 120%, rgba(76,201,240,0.08), transparent 62%);
+    }
+    body.light::after {
+      background:
+        radial-gradient(780px 420px at 50% 120%, rgba(0,119,255,0.07), transparent 62%);
     }
 
     header {
@@ -42,54 +76,98 @@
       flex-direction: column;
       align-items: center;
       transition: background 0.5s, border 0.5s;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
-    h1 span {
-      color: var(--accent);
-      transition: color 0.5s;
-    }
+    h1 { margin: 0; letter-spacing: 0.2px; font-weight: 600; }
+    h1 span { color: var(--accent); transition: color 0.5s; }
 
-    nav {
-      margin-top: 10px;
-    }
-
+    nav { margin-top: 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
     nav a {
-      margin: 0 15px;
+      margin: 0;
       color: var(--accent);
       text-decoration: none;
       font-weight: 500;
-      transition: color 0.5s;
+      transition: transform 0.25s ease, background 0.25s ease, border 0.25s ease;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+    }
+    nav a:hover {
+      transform: translateY(-1px);
+      background: rgba(76,201,240,0.08);
+      border-color: rgba(76,201,240,0.25);
+    }
+    body.light nav a:hover {
+      background: rgba(0,119,255,0.08);
+      border-color: rgba(0,119,255,0.22);
     }
 
     .toggle-btn {
       position: fixed;
       top: 20px;
       right: 20px;
-      padding: 10px;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      padding: 0;
       font-size: 18px;
       background: var(--card);
       border: 1px solid var(--accent);
       border-radius: 50%;
       cursor: pointer;
-      transition: background 0.5s, color 0.5s, border 0.5s;
+      transition: transform 0.25s ease, background 0.5s, color 0.5s, border 0.5s, box-shadow 0.25s ease;
       z-index: 20;
-      box-shadow: 0 3px 8px var(--shadow);
+      box-shadow: 0 6px 16px var(--shadow);
     }
-
     .toggle-btn:hover {
+      transform: translateY(-2px) scale(1.02);
       background: var(--accent);
       color: #fff;
+      box-shadow: 0 10px 24px var(--shadow);
     }
 
     .hero {
       text-align: center;
-      padding: 100px 20px;
-      animation: fadeIn 1.2s ease-out;
+      padding: 92px 20px 50px;
+      animation: heroIn 0.9s ease-out both;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes heroIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 26px 18px;
+      box-shadow: 0 14px 30px var(--shadow);
+      transition: background 0.5s, border 0.5s, box-shadow 0.5s;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-inner::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -140%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+      transform: skewX(-18deg);
+      animation: shine 4.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes shine {
+      0%, 65% { left: -140%; }
+      100%    { left: 160%; }
     }
 
     .profile-pic {
@@ -98,18 +176,30 @@
       border-radius: 50%;
       border: 3px solid var(--accent);
       background: #222;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       display: inline-block;
       background-size: cover;
       background-position: center;
-      transition: border 0.5s;
+      transition: transform 0.35s ease, border 0.5s, box-shadow 0.35s ease;
+      box-shadow: 0 10px 22px var(--shadow);
     }
+    .profile-pic:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 16px 34px var(--shadow);
+    }
+
+    .hero h2 { margin: 6px 0 6px; letter-spacing: 0.2px; }
+    .hero p  { margin: 0; opacity: 0.85; }
 
     section {
       padding: 60px 20px;
       max-width: 900px;
       margin: auto;
-      animation: fadeIn 1.2s ease;
+    }
+    section h2 {
+      margin: 0 0 14px;
+      letter-spacing: 0.2px;
+      font-weight: 600;
     }
 
     .card {
@@ -118,26 +208,166 @@
       padding: 20px;
       border-radius: 12px;
       margin-bottom: 20px;
-      transition: transform 0.3s ease, background 0.5s, box-shadow 0.5s, border 0.5s;
+      transition: transform 0.25s ease, background 0.5s, box-shadow 0.35s, border 0.5s;
       cursor: pointer;
-      box-shadow: 0 3px 6px var(--shadow);
+      box-shadow: 0 6px 14px var(--shadow);
+      position: relative;
+      overflow: hidden;
     }
-
+    .card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -130%;
+      width: 70%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(76,201,240,0.10), transparent);
+      transform: skewX(-18deg);
+      transition: left 0.6s ease;
+      pointer-events: none;
+    }
+    body.light .card::after {
+      background: linear-gradient(90deg, transparent, rgba(0,119,255,0.10), transparent);
+    }
     .card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 8px 20px var(--shadow);
+      box-shadow: 0 14px 32px var(--shadow);
+    }
+    .card:hover::after { left: 160%; }
+
+    ul { margin: 10px 0 0 18px; }
+    li { margin: 6px 0; }
+
+    a.contact-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: bold;
+      transition: opacity 0.25s ease;
+    }
+    a.contact-link:hover {
+      text-decoration: underline;
+      opacity: 0.9;
     }
 
-    .skills span {
-      display: inline-block;
-      padding: 8px 15px;
-      border-radius: 5px;
-      margin: 5px;
+    .skills-wrap {
+      display: grid;
+      gap: 14px;
+    }
+    @media (min-width: 860px) {
+      .skills-wrap { grid-template-columns: 1fr 1fr; }
+    }
+
+    .skill-group {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 10px 22px var(--shadow);
+      transition: transform 0.25s ease, box-shadow 0.35s ease, border 0.35s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .skill-group:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 34px var(--shadow);
+    }
+    .skill-group::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -130%;
+      width: 70%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(76,201,240,0.10), transparent);
+      transform: skewX(-18deg);
+      transition: left 0.6s ease;
+      pointer-events: none;
+    }
+    body.light .skill-group::after {
+      background: linear-gradient(90deg, transparent, rgba(0,119,255,0.10), transparent);
+    }
+    .skill-group:hover::after { left: 160%; }
+
+    .skill-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .skill-title {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: 0.2px;
+    }
+    .skill-pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      opacity: 0.95;
+      user-select: none;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .skill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 999px;
       background: var(--card);
       border: 1px solid var(--border);
       color: var(--accent);
-      transition: background 0.5s, border 0.5s, color 0.5s;
+      transition: transform 0.2s ease, background 0.5s, border 0.5s;
+      font-weight: 600;
+      font-size: 13px;
+      user-select: none;
     }
+    .skill-tag:hover { transform: translateY(-2px); }
+
+    .skill-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(76,201,240,0.10);
+      border: 1px solid rgba(76,201,240,0.22);
+      color: var(--accent);
+      font-size: 14px;
+      flex: 0 0 auto;
+    }
+    body.light .skill-icon {
+      background: rgba(0,119,255,0.10);
+      border: 1px solid rgba(0,119,255,0.20);
+    }
+
+    .skill-note {
+      margin-top: 10px;
+      opacity: 0.85;
+      font-size: 13px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      will-change: opacity, transform;
+    }
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .delay-1 { transition-delay: 0.08s; }
+    .delay-2 { transition-delay: 0.16s; }
+    .delay-3 { transition-delay: 0.24s; }
 
     footer {
       text-align: center;
@@ -145,147 +375,238 @@
       background: var(--card);
       border-top: 1px solid var(--border);
       margin-top: 40px;
-      opacity: 0.85;
+      opacity: 0.9;
       transition: background 0.5s, border 0.5s;
     }
 
-    a.contact-link {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: bold;
-      transition: color 0.5s;
-    }
-    a.contact-link:hover {
-      text-decoration: underline;
+    @media (max-width: 520px) {
+      .hero { padding: 84px 16px 44px; }
+      .toggle-btn { top: 14px; right: 14px; }
     }
 
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .hero { animation: none; }
+      .hero-inner::after { display: none; }
+      .card, .toggle-btn, nav a, .profile-pic, .skill-tag, .skill-group { transition: none; }
+      .card::after, .skill-group::after { display: none; }
+    }
   </style>
 </head>
+
 <body>
+  <button class="toggle-btn" id="theme-toggle">🌙</button>
 
-<!-- Light/Dark Toggle -->
-<button class="toggle-btn" id="theme-toggle">🌙</button>
+  <header>
+    <h1 class="reveal show">Hello, I'm <span>Cevin Gurung</span></h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-<header>
-  <h1>Hello, I'm <span>Cevin Gurung</span></h1>
-  <nav>
-    <a href="#about">About</a>
-    <a href="#experience">Experience</a>
-    <a href="#skills">Skills</a>
-    <a href="#projects">Projects</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
-
-<div class="hero">
-  <div class="profile-pic" style="background-image: url('pic.jpg');"></div>
-  <!-- Replace 'your-photo.jpg' later -->
-  <h2>Java Developer & Tech Enthusiast</h2>
-  <p>Backend-focused developer from Nepal | Learning Java + Microservices</p>
-</div>
-
-<section id="about">
-  <h2>About Me</h2>
-  <div class="card">
-    <p>
-      I'm Cevin Gurung, a backend-focused developer passionate about Java, Spring Boot,
-      microservices, and exploring new technologies. I love building real-world projects
-      and improving my skills every day.
-    </p>
-  </div>
-</section>
-
-<section id="experience">
-  <h2>Work Experience</h2>
-
-  <div class="card">
-    <h3>Full Stack Intern - MPG Solution</h3>
-    <p>Worked primarily on Spring Boot backend development and integrated Angular frontend for web applications.</p>
-    <p>Key Responsibilities:</p>
-    <ul>
-      <li>Developed REST APIs using Spring Boot</li>
-      <li>Built Angular components for frontend UI</li>
-      <li>Database design and management with MySQL</li>
-      <li>Collaborated with team using Git & GitHub</li>
-    </ul>
-    <p>Duration: Jul 2025 - Present</p>
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="profile-pic" style="background-image: url('pic.jpg');"></div>
+      <h2>Java Developer & Tech Enthusiast</h2>
+      <p>Backend-focused developer from Nepal | Java • Microservices • Cloud • System Design</p>
+    </div>
   </div>
 
-  <div class="card">
-    <h3>Intern - Informatics College Pokhara</h3>
-    <p>Worked on backend Java projects, server configuration, and IoT integration.</p>
-    <p>Duration: Jan 2025 - Jun 2025</p>
-  </div>
+  <section id="about" class="reveal">
+    <h2>About Me</h2>
+    <div class="card">
+      <p>
+        I'm <strong>Cevin Gurung</strong>, a <strong>3rd year student at Informatics College Pokhara</strong> and a
+        backend-focused developer who enjoys building real-world systems using <strong>Java</strong> and
+        <strong>Spring Boot</strong>. I’m highly interested in <strong>microservices</strong>, <strong>cloud</strong>,
+        and <strong>system design</strong>, and I’m always exploring new technologies that help me build scalable
+        and production-ready applications.
+      </p>
+      <p>
+        At my internship, I work with <strong>React + Spring Boot</strong> and implement secure authentication using
+        <strong>JWT</strong>. I focus more on backend development, clean APIs, and database design.
+      </p>
+      <p>
+        I also do freelancing where I handle <strong>QA game testing</strong> and build backend features using
+        <strong>Spring Boot</strong>.
+      </p>
+      <p>
+        Previously, at <strong>Informatics College Pokhara</strong>, I worked as an <strong>Intern Tutor</strong>
+        where I taught <strong>Core Java</strong> (especially <strong>OOP concepts</strong>) to juniors (students one
+        year below me).
+      </p>
+    </div>
+  </section>
 
-  <div class="card">
-    <h3>Freelance Developer</h3>
-    <p>Built small web applications and automated tools using Java, JSP, and MySQL.</p>
-    <p>Duration: Jul 2025 - Present</p>
-  </div>
+  <section id="experience" class="reveal">
+    <h2>Work Experience</h2>
 
-</section>
+    <div class="card reveal delay-1">
+      <h3>Full Stack Intern - MPG Solution</h3>
+      <p>
+        Worked on modern full-stack development using <strong>React</strong> and <strong>Spring Boot</strong>,
+        focusing on backend APIs and secure authentication with <strong>JWT</strong>.
+      </p>
+      <p>Key Responsibilities:</p>
+      <ul>
+        <li>Developed REST APIs using Spring Boot</li>
+        <li>Implemented JWT authentication for secure login and role-based access</li>
+        <li>Integrated React frontend with backend APIs</li>
+        <li>Database design and management (MySQL / PostgreSQL)</li>
+        <li>Collaborated using Git & GitHub</li>
+      </ul>
+      <p>Duration: Jul 2025 - Present</p>
+    </div>
 
-<section id="skills">
-  <h2>Skills</h2>
-  <div class="card skills">
-    <span>Java</span>
-    <span>Spring Boot</span>
-    <span>MySQL</span>
-    <span>Git & GitHub</span>
-    <span>HTML</span>
-    <span>CSS</span>
-    <span>JavaScript</span>
-    <span>Angular</span>
-    <span>Linux</span>
-  </div>
-</section>
+    <div class="card reveal delay-2">
+      <h3>Intern Tutor - Informatics College Pokhara</h3>
+      <p>Mentored juniors and helped them understand <strong>Core Java</strong> fundamentals.</p>
+      <p>Key Topics Taught:</p>
+      <ul>
+        <li>OOP concepts (Encapsulation, Inheritance, Polymorphism, Abstraction)</li>
+        <li>Classes, Objects, Methods, and Constructors</li>
+        <li>Problem solving & logic building</li>
+      </ul>
+      <p>Duration: Jan 2025 - Jun 2025</p>
+    </div>
 
-<section id="projects">
-  <h2>Projects</h2>
+    <div class="card reveal delay-3">
+      <h3>Freelance Developer (Backend + QA)</h3>
+      <p>
+        Worked on freelance projects where I contributed to <strong>QA game testing</strong> and developed backend
+        features using <strong>Spring Boot</strong>.
+      </p>
+      <p>Duration: Jul 2025 - Present</p>
+    </div>
+  </section>
 
-  <div class="card" onclick="window.open('https://github.com/CevinGurung/nepWardrobe', '_blank')">
-    <h3>nepWardrobe</h3>
-    <p>E-commerce platform built using Java, JSP, Servlets, and JDBC.</p>
-    <p>Tech stack: Java, JSP, JDBC, MySQL</p>
-  </div>
+  <section id="skills" class="reveal">
+    <h2>Skills</h2>
 
-  <div class="card" onclick="window.open('https://github.com/CevinGurung/SmartDoor', '_blank')">
-    <h3>SmartDoor (IoT)</h3>
-    <p>Arduino smart door using AS608 fingerprint sensor & servo motor.</p>
-    <p>Tech stack: Arduino, Servo, Fingerprint sensor</p>
-  </div>
+    <div class="skills-wrap">
+      <div class="skill-group reveal delay-1">
+        <div class="skill-head">
+          <h3 class="skill-title">Backend & Security</h3>
+          <span class="skill-pill">Primary</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag"><span class="skill-icon">☕</span>Java (Core + OOP)</span>
+          <span class="skill-tag"><span class="skill-icon">🌱</span>Spring Boot</span>
+          <span class="skill-tag"><span class="skill-icon">🔐</span>JWT Authentication</span>
+          <span class="skill-tag"><span class="skill-icon">⚙️</span>REST APIs</span>
+          <span class="skill-tag"><span class="skill-icon">🏗️</span>Microservices (Learning)</span>
+          <span class="skill-tag"><span class="skill-icon">☁️</span>Cloud (Learning)</span>
+        </div>
+      </div>
 
-  <div class="card" onclick="window.open('https://github.com/CevinGurung', '_blank')">
-    <h3>#100DaysOfCode</h3>
-    <p>Daily progress in Java, problem solving & backend concepts.</p>
-    <p>Tech stack: Java, OOP, Data Structures</p>
-  </div>
+      <div class="skill-group reveal delay-2">
+        <div class="skill-head">
+          <h3 class="skill-title">Databases</h3>
+          <span class="skill-pill">SQL</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag"><span class="skill-icon">🗄️</span>MySQL</span>
+          <span class="skill-tag"><span class="skill-icon">🐘</span>PostgreSQL</span>
+          <span class="skill-tag"><span class="skill-icon">🧩</span>Schema Design</span>
+          <span class="skill-tag"><span class="skill-icon">📈</span>Basic Optimization</span>
+        </div>
+      </div>
 
-</section>
+      <div class="skill-group reveal delay-3">
+        <div class="skill-head">
+          <h3 class="skill-title">Frontend & Full Stack</h3>
+          <span class="skill-pill">React</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag"><span class="skill-icon">⚛️</span>React</span>
+          <span class="skill-tag"><span class="skill-icon">🟩</span>MERN</span>
+          <span class="skill-tag"><span class="skill-icon">🌐</span>HTML</span>
+          <span class="skill-tag"><span class="skill-icon">🎨</span>CSS</span>
+          <span class="skill-tag"><span class="skill-icon">🧠</span>JavaScript</span>
+        </div>
+      </div>
 
-<section id="contact">
-  <h2>Contact</h2>
-  <div class="card">
-    <p>Email: <a href="mailto:kevingrg8@gmail.com" class="contact-link">kevingrg8@gmail.com</a></p>
-    <p>GitHub: <a href="https://github.com/CevinGurung" target="_blank" class="contact-link">github.com/CevinGurung</a></p>
-  </div>
-</section>
+      <div class="skill-group reveal delay-1">
+        <div class="skill-head">
+          <h3 class="skill-title">Tools & Other</h3>
+          <span class="skill-pill">Workflow</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag"><span class="skill-icon">🔁</span>Git & GitHub</span>
+          <span class="skill-tag"><span class="skill-icon">🐧</span>Linux</span>
+          <span class="skill-tag"><span class="skill-icon">⌨️</span>Shell Scripting (Basic)</span>
+          <span class="skill-tag"><span class="skill-icon">🧪</span>QA Game Testing</span>
+          <span class="skill-tag"><span class="skill-icon">🏗️</span>System Design (Learning)</span>
+        </div>
+      </div>
 
-<footer>
-  © 2025 Cevin Gurung. All rights reserved.
-</footer>
+      <div class="skill-group reveal delay-2">
+        <div class="skill-head">
+          <h3 class="skill-title">Extra Tech</h3>
+          <span class="skill-pill">Basic</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag"><span class="skill-icon">🐍</span>Python</span>
+          <span class="skill-tag"><span class="skill-icon">🧩</span>Django</span>
+          <span class="skill-tag"><span class="skill-icon">🐘</span>PHP</span>
+          <span class="skill-tag"><span class="skill-icon">🧱</span>Laravel</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<script>
-  const toggleBtn = document.getElementById('theme-toggle');
-  toggleBtn.addEventListener('click', () => {
-    document.body.classList.toggle('light');
-    if(document.body.classList.contains('light')){
-      toggleBtn.textContent = '☀️';
-    } else {
-      toggleBtn.textContent = '🌙';
-    }
-  });
-</script>
+  <section id="projects" class="reveal">
+    <h2>Projects</h2>
 
+    <div class="card reveal delay-1" onclick="window.open('https://github.com/CevinGurung/nepWardrobe', '_blank')">
+      <h3>nepWardrobe</h3>
+      <p>E-commerce platform built using Java, JSP, Servlets, and JDBC.</p>
+      <p>Tech stack: Java, JSP, JDBC, MySQL</p>
+    </div>
+
+    <div class="card reveal delay-2" onclick="window.open('https://github.com/CevinGurung/SmartDoor', '_blank')">
+      <h3>SmartDoor (IoT)</h3>
+      <p>Arduino smart door using AS608 fingerprint sensor & servo motor.</p>
+      <p>Tech stack: Arduino, Servo, Fingerprint sensor</p>
+    </div>
+
+    <div class="card reveal delay-3" onclick="window.open('https://github.com/CevinGurung', '_blank')">
+      <h3>#100DaysOfCode</h3>
+      <p>Daily progress in Java, problem solving & backend concepts.</p>
+      <p>Tech stack: Java, OOP, Data Structures</p>
+    </div>
+  </section>
+
+  <section id="contact" class="reveal">
+    <h2>Contact</h2>
+    <div class="card">
+      <p>Email: <a href="mailto:kevingrg8@gmail.com" class="contact-link">kevingrg8@gmail.com</a></p>
+      <p>GitHub: <a href="https://github.com/CevinGurung" target="_blank" class="contact-link">github.com/CevinGurung</a></p>
+    </div>
+  </section>
+
+  <footer class="reveal">© 2025 Cevin Gurung. All rights reserved.</footer>
+
+  <script>
+    const toggleBtn = document.getElementById('theme-toggle');
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+      toggleBtn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
+    });
+
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('show');
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -10% 0px" });
+
+    revealEls.forEach(el => io.observe(el));
+  </script>
 </body>
 </html>
